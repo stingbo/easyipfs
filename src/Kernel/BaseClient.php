@@ -34,6 +34,7 @@ class BaseClient
     public function __construct(ServiceContainer $app)
     {
         $this->app = $app;
+        $this->version = $app->config->get('version') ?? 'v0';
     }
 
     /**
@@ -80,6 +81,7 @@ class BaseClient
      */
     public function httpPost(string $url, array $get_params = [], array $data = [])
     {
+        $url = sprintf($url, $this->version);
         if ($get_params) {
             $url .= '?'.http_build_query($get_params);
         }

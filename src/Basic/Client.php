@@ -18,6 +18,6 @@ class Client extends BaseClient
      */
     public function id($get_params = [])
     {
-        return $this->httpPost('/api/v0/id', $get_params);
+        return $this->httpPost('/api/%s/id', $get_params);
     }
 }
