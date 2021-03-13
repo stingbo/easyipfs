@@ -78,8 +78,12 @@ class BaseClient
      * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function httpPost(string $url, array $data = [])
+    public function httpPost(string $url, array $get_params = [], array $data = [])
     {
+        if ($get_params) {
+            $url .= '?'.http_build_query($get_params);
+        }
+
         return $this->request($url, 'POST', ['form_params' => $data]);
     }
 

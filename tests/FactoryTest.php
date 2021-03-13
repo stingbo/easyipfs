@@ -13,7 +13,7 @@ class FactoryTest extends TestCase
             'base_uri' => 'http://127.0.0.1',
         ];
         $this->assertInstanceOf(
-            \EasyIPFS\Application::class,
+            \EasyIPFS\Basic\Client::class,
             Factory::basic($config)
         );
     }
