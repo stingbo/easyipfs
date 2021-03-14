@@ -36,4 +36,19 @@ class Client extends BaseClient
     {
         return $this->httpUpload('/api/%s/add', $files, $query);
     }
+
+    /**
+     * Show IPFS object data.
+     *
+     * @param array $query
+     *
+     * @return array|\EasyIPFS\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cat($query = [])
+    {
+        return $this->requestRaw('/api/%s/cat', 'POST', ['query' => $query])->getBodyContents();
+    }
 }
