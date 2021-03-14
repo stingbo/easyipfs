@@ -84,7 +84,7 @@ class BaseClient
     {
         $url = sprintf($url, $this->version);
 
-        return $this->request($url, 'POST', ['form_params' => $data, 'query' => $query], true);
+        return $this->request($url, 'POST', ['form_params' => $data, 'query' => $query]);
     }
 
     /**

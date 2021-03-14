@@ -66,4 +66,19 @@ class Client extends BaseClient
     {
         return $this->requestRaw('/api/%s/cat', 'POST', ['query' => $query])->getBodyContents();
     }
+
+    /**
+     * List directory contents for Unix filesystem objects.
+     *
+     * @param array $query
+     *
+     * @return array|\EasyIPFS\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function ls($query = [])
+    {
+        return $this->httpPost('/api/%s/ls', $query);
+    }
 }
