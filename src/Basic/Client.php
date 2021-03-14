@@ -22,6 +22,21 @@ class Client extends BaseClient
     }
 
     /**
+     * Download IPFS objects.
+     *
+     * @param array $query
+     *
+     * @return string
+     *
+     * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get($query = [])
+    {
+        return $this->requestRaw('/api/%s/get', 'POST', ['query' => $query])->getBodyContents();
+    }
+
+    /**
      * Add a file to ipfs.
      *
      * @param array $files
