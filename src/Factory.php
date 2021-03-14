@@ -11,8 +11,6 @@
 
 namespace EasyIPFS;
 
-use EasyIPFS\Kernel\ServiceContainer;
-
 /**
  * Class Factory.
  *
@@ -20,13 +18,14 @@ use EasyIPFS\Kernel\ServiceContainer;
  */
 class Factory
 {
-    public static function make(string $name, array $config): ServiceContainer
+    /**
+     * @return mixed
+     */
+    public static function make(string $name, array $config)
     {
-        return new Application($config);
-//        $namespace = Kernel\Support\Str::studly($name);
-//        $application = "\\EasyIPFS\\{$namespace}\\Application";
+        $app = new Application($config);
 
-//        return new $application($config);
+        return $app->{$name};
     }
 
     /**
@@ -34,7 +33,7 @@ class Factory
      *
      * @return mixed
      */
-    public static function __callStatic(string $name, array $arguments): ServiceContainer
+    public static function __callStatic(string $name, array $arguments)
     {
         return self::make($name, ...$arguments);
     }

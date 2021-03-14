@@ -34,6 +34,7 @@ class BaseClient
     public function __construct(ServiceContainer $app)
     {
         $this->app = $app;
+        $this->version = $app->config->get('version') ?? 'v0';
     }
 
     /**
@@ -78,9 +79,11 @@ class BaseClient
      * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function httpPost(string $url, array $data = [])
+    public function httpPost(string $url, array $query = [], array $data = [])
     {
-        return $this->request($url, 'POST', ['form_params' => $data]);
+        $url = sprintf($url, $this->version);
+
+        return $this->request($url, 'POST', ['form_params' => $data, 'query' => $query]);
     }
 
     /**
@@ -107,6 +110,50 @@ class BaseClient
     public function httpDelete(string $url, array $query = [])
     {
         return $this->request($url, 'DELETE', ['query' => $query]);
+    }
+
+    /**
+     * Upload file.
+     *
+     * @param string $url
+     * @param array $files
+     * @param array $form
+     * @param array $query
+     *
+     * @return array|Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function httpUpload(string $url, array $files = [], array $form = [], array $query = [])
+    {
+        $multipart = [];
+        $headers = [];
+        $url = sprintf($url, $this->version);
+
+        if (isset($form['filename'])) {
+            $headers = [
+                'Content-Disposition' => 'form-data; name="file"; filename="'.$form['filename'].'"'
+            ];
+        }
+
+        foreach ($files as $name => $path) {
+            $multipart[] = [
+                'name' => $name,
+                'contents' => fopen($path, 'r'),
+                'headers' => $headers
+            ];
+        }
+
+        foreach ($form as $name => $contents) {
+            $multipart[] = compact('name', 'contents');
+        }
+
+        return $this->request(
+            $url,
+            'POST',
+            ['query' => $query, 'multipart' => $multipart, 'connect_timeout' => 30, 'timeout' => 30, 'read_timeout' => 30]
+        );
     }
 
     /**

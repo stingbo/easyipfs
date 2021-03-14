@@ -7,15 +7,12 @@ use EasyIPFS\Tests\TestCase;
 
 class ClientTest extends TestCase
 {
-    public function testDepth()
+    public function testId()
     {
         $client = $this->mockApiClient(Client::class);
 
-        $client->expects()->httpGet('/api/v3/depth', [
-            'symbol' => 'ETHBTC',
-            'limit' => 10,
-        ])->andReturn('mock-result');
+        $client->expects()->httpPost('/api/v0/id', [])->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->depth('ETHBTC', 10));
+        $this->assertSame('mock-result', $client->id([]));
     }
 }
