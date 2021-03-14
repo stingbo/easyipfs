@@ -2,6 +2,7 @@
 
 namespace EasyIPFS\Kernel;
 
+use EasyIPFS\Kernel\Http\Response;
 use EasyIPFS\Kernel\Traits\HasHttpRequests;
 use Psr\Http\Message\RequestInterface;
 
@@ -97,6 +98,23 @@ class BaseClient
     public function httpPostJson(string $url, array $data = [], array $query = [])
     {
         return $this->request($url, 'POST', ['query' => $query, 'json' => $data]);
+    }
+
+    /**
+     * @param string $url
+     * @param string $method
+     * @param array $options
+     *
+     * @return Response
+     *
+     * @throws Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function requestRaw(string $url, string $method = 'GET', array $options = [])
+    {
+        $url = sprintf($url, $this->version);
+
+        return Response::buildFromPsrResponse($this->request($url, $method, $options, true));
     }
 
     /**
