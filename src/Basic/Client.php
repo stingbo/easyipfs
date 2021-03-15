@@ -81,4 +81,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/api/%s/ls', $query);
     }
+
+    /**
+     * List directory contents for Unix filesystem objects.
+     *
+     * @param array $query
+     *
+     * @return array|\EasyIPFS\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function mount($query = [])
+    {
+        return $this->httpPost('/api/%s/mount', $query);
+    }
 }
