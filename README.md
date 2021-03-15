@@ -13,3 +13,5 @@ $ composer require "stingbo/easyipfs" -vvv
 ```
 
 ## 使用说明
+
+1. intall go-ipfs and start daemon: `ipfs daemon`
