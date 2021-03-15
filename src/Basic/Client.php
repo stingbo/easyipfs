@@ -96,4 +96,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/api/%s/mount', $query);
     }
+
+    /**
+     * Send echo request packets to IPFS hosts.
+     *
+     * @param array $query
+     *
+     * @return array|\EasyIPFS\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyIPFS\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function ping($query = [])
+    {
+        return $this->requestRaw('/api/%s/ping', 'POST', ['query' => $query])->getBodyContents();
+    }
 }
